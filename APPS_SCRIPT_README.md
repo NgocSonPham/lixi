@@ -79,21 +79,46 @@ function setupEnvironment() {
 // Hàm xử lý yêu cầu GET (Lấy dữ liệu Lượt chơi & Kho Quà)
 function doGet(e) {
   var action = e.parameter.action;
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var inventorySheet = ss.getSheetByName(SHEET_INVENTORY);
+  
+  // Hành động 1: Lấy danh sách kho quà (Không cần SĐT, load ngay khi vào Web)
+  if (action === 'get_inventory') {
+      var inventory = [];
+      var dataInv = inventorySheet.getDataRange().getValues();
+      for (var j = 1; j < dataInv.length; j++) {
+         var qty = parseInt(dataInv[j][2]) || 0;
+         if (qty > 0) {
+             inventory.push({
+                 title: dataInv[j][0],
+                 text: dataInv[j][1],
+                 isWish: String(dataInv[j][3]).toUpperCase() === 'TRUE'
+             });
+         }
+      }
+      return ContentService.createTextOutput(JSON.stringify({
+          status: "success",
+          inventory: inventory
+      })).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // Hành động 2: Kiểm tra Đăng nhập & Lượt chơi
   if(action === 'login') {
     var phone = e.parameter.phone;
     var name = e.parameter.name;
-    
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
     var userSheet = ss.getSheetByName(SHEET_USERS);
-    var inventorySheet = ss.getSheetByName(SHEET_INVENTORY);
     
     // 1. Kiểm tra Lượt chơi trong sheet Users
     var userTurns = 0;
     var userFound = false;
     var dataUsers = userSheet.getDataRange().getValues();
     
+    // Xử lý xoá số 0 ở đầu để so sánh (Google Sheet hay tự cắt số 0 của SĐT)
+    var normalizedInputPhone = String(phone).replace(/\\D/g,'').replace(/^0+/, '');
+
     for (var i = 1; i < dataUsers.length; i++) {
-        if (String(dataUsers[i][0]) === String(phone)) {
+        var sheetPhone = String(dataUsers[i][0]).replace(/\\D/g,'').replace(/^0+/, '');
+        if (sheetPhone === normalizedInputPhone) {
             userTurns = parseInt(dataUsers[i][1]) || 0;
             userFound = true;
             break;
@@ -152,12 +177,14 @@ function doPost(e) {
   }
   
   var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var normalizedInputPhone = String(phone).replace(/\\D/g,'').replace(/^0+/, '');
   
   // 1. Trừ 1 Lượt trong Users
   var userSheet = ss.getSheetByName(SHEET_USERS);
   var dataUsers = userSheet.getDataRange().getValues();
   for (var i = 1; i < dataUsers.length; i++) {
-      if (String(dataUsers[i][0]) === String(phone)) {
+      var sheetPhone = String(dataUsers[i][0]).replace(/\\D/g,'').replace(/^0+/, '');
+      if (sheetPhone === normalizedInputPhone) {
           var currentTurns = parseInt(dataUsers[i][1]);
           if (currentTurns > 0) {
              userSheet.getRange(i + 1, 2).setValue(currentTurns - 1); 

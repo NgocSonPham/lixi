@@ -1,6 +1,6 @@
 // --- CẤU HÌNH API GOOGLE SHEETS ---
 // THAY THẾ BẰNG URL WEB APP GOOGLE APPS SCRIPT MỚI NHẤT SAU KHI DEPLOY CODE MỚI
-const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzM61_OlaLojLmKekhvq849T8Y1oLviknG69lrSksHGCVPLkz47nyWwVo3tggx5CiR6/exec";
+const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbywQGbEzcmBuJejyj6jSzitXa2iq2v9mYl-BK-QlSqFGJHVMp__ne971i7fwBSfMe5y/exec";
 
 // UI Elements & State
 const introScreen = document.getElementById('intro-screen');
