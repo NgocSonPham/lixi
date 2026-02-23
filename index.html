@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Hái Lộc Đầu Xuân - Mở Bao Lì Xì</title>
+    <!-- Google Fonts cho thiết kế hiện đại -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Màn hình Nhập Tên -->
+    <div id="intro-screen" class="overlay flex-center active">
+      <div class="glass-panel text-center pulse-in layout-2-col">
+        <!-- Cột Trái: Form và Quà -->
+        <div class="intro-left">
+          <h1 class="glow-text main-title">🧧 HÁI LỘC ĐẦU XUÂN 🧧</h1>
+          <p class="subtitle">Nhập thông tin của bạn để nhận lì xì may mắn!</p>
+          <form id="name-form" class="name-form">
+            <input
+              type="tel"
+              id="user-phone"
+              placeholder="Số điện thoại của bạn..."
+              required
+              autocomplete="off"
+              pattern="[0-9]{9,11}"
+              title="Vui lòng nhập số điện thoại hợp lệ"
+            />
+            <input
+              type="text"
+              id="user-name"
+              placeholder="Tên của bạn là..."
+              required
+              autocomplete="off"
+            />
+            <button type="submit" class="btn-primary" id="btn-start">
+              Kiểm Tra Lượt & Chơi
+            </button>
+          </form>
+
+          <div class="prize-preview-container mt-15">
+            <p class="preview-title">🎁 CÁC PHẦN QUÀ ĐANG CHỜ 🎁</p>
+            <div id="prize-list-preview" class="prize-list"></div>
+          </div>
+        </div>
+
+        <!-- Cột Phải: Thanh toán MoMo -->
+        <div class="intro-right">
+          <div id="momo-container" class="momo-container">
+            <p id="error-msg" class="error-msg d-none">Bạn đã hết lượt chơi!</p>
+            <p class="momo-instruction">
+              Gửi một lời chúc thân thương kèm Lì Xì để nhận lượt hái lộc nhé!
+            </p>
+            <img src="qr.jpg" alt="MoMo QR Code" class="qr-code" />
+            <p class="momo-note">
+              Sau khi CK thành công, Admin sẽ cộng lượt cho bạn.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hướng dẫn (Trong game) -->
+    <div id="instruction" style="display: none">
+      Chạm vào một bao lì xì để mở!
+    </div>
+
+    <!-- Màn hình đang gửi dữ liệu (Loading) -->
+    <div id="loading-screen" class="overlay flex-center hidden">
+      <div class="glass-panel text-center">
+        <div class="spinner"></div>
+        <p class="subtitle mt-15">Đang gửi lộc về làng...</p>
+      </div>
+    </div>
+
+    <!-- Canvas Game -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- Lượt chơi góc trên -->
+    <div id="turn-counter" class="turn-counter hidden">
+      Lượt của bạn: <span id="current-turns">0</span>
+    </div>
+
+    <!-- Màn hình kết quả trúng thưởng -->
+    <div id="ui-layer" class="overlay flex-center hidden pointer-events-none">
+      <div id="message-box" class="glass-panel text-center pointer-events-auto">
+        <div class="title-text" id="msg-title">Chúc Mừng Năm Mới</div>
+        <div class="prize-text glow-text" id="msg-prize">0 VNĐ</div>
+        <button class="btn-secondary mt-15" id="btn-continue">
+          Nhận Lộc & Chơi Tiếp
+        </button>
+      </div>
+    </div>
+
+    <!-- Thư viện Canvas Confetti (Tuỳ chọn thêm để hiệu ứng rực rỡ hơn bên cạnh logic tự code) -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script> -->
+    <script src="script.js"></script>
+  </body>
+</html>
