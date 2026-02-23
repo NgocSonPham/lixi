@@ -74,6 +74,19 @@ async function fetchGameData(phone, name) {
     }
 }
 
+// Gọi API tự động lấy danh sách quà khi web vừa load xong
+window.addEventListener('DOMContentLoaded', () => {
+    fetch(`${GOOGLE_APP_SCRIPT_URL}?action=get_inventory`)
+        .then(res => res.json())
+        .then(data => {
+            console.log("🎁 Dữ liệu kho quà tải từ Server:", data);
+            if (data.status === 'success') {
+                prizes = data.inventory;
+                renderPrizePreview();
+            }
+        })
+});
+
 // Gửi kết quả bốc thăm lên Sheet (để trừ lượt & kho quà đã nhận)
 async function claimPrizeToSheet(phone, prizeTitle, prizeText) {
     try {
