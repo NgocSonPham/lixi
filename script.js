@@ -38,6 +38,28 @@ let currentPrizeObj = null;
 // Danh sách phần thưởng sẽ được tải từ Google Sheet
 let prizes = [];
 
+function renderPrizePreview() {
+    const prizeListPreview = document.getElementById('prize-list-preview');
+    if (prizeListPreview) {
+        prizeListPreview.innerHTML = '';
+        if (prizes.length === 0) {
+            prizeListPreview.innerHTML = '<span class="prize-tag" style="background: transparent; box-shadow: none;">Đang tải danh sách quà...</span>';
+            return;
+        }
+        prizes.forEach(p => {
+            const tag = document.createElement('span');
+            tag.className = 'prize-tag';
+            if (p.isWish) {
+                tag.classList.add('wish-tag');
+                tag.innerText = "💌 " + p.title;
+            } else {
+                tag.innerText = "💵 " + p.text;
+            }
+            prizeListPreview.appendChild(tag);
+        });
+    }
+}
+
 // --- Resize canvas ---
 function resize() {
     width = window.innerWidth;
